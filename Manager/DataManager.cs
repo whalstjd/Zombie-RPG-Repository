@@ -67,18 +67,28 @@ public class DataManager : MonoBehaviour
         LoadGameData();
         StartCoroutine(AutoSave());
 
-        if (gameData.isBeginner)
+        // 초보자가 아니면 바로 BGM 재생
+        if (!gameData.isBeginner)
+        {
+            if (gameData.playerStat.hp <= 0)
+            {
+                UIManager.Instance.restartPanel.gameObject.SetActive(true);
+            }
+            GameManager.Instance.BGM_AudioSource.clip = GameManager.Instance.bgm_Clip;
+            GameManager.Instance.BGM_AudioSource.volume = gameData.bgmSound;
+            GameManager.Instance.BGM_AudioSource.loop = true;
+            GameManager.Instance.BGM_AudioSource.Play();
+        }
+        else 
         {
             gameData.isBeginner = false;
-            gameData.playerStat.Initialize(); // Stat 초기화
+            gameData.playerStat.Initialize(GameManager.Instance.player.gameObject); // 플레이어 게임오브젝트 전달
             SaveGameData();
             GameManager.Instance.cutScene.SetActive(true);
             GameManager.Instance.cutScene.GetComponent<CutScene>().StartCoroutine("CutCor");
         }
-        else if (gameData.playerStat.hp <= 0)
-        {
-            UIManager.Instance.restartPanel.gameObject.SetActive(true);
-        }
+
+        
     }
 
     /// <summary>

@@ -229,96 +229,96 @@ public class GameConfig : ScriptableObject
         {
             floors = new Floor[13]
             {
-                new Floor { name = "좀비 스테이지", lvLimit = 1, isBossClear = false, stages = new Stage[4] 
+                new Floor { name = "좀비 스테이지", lvLimit = 1, stages = new Stage[4] 
                 {
                     new Stage { name = "시작의 문", isBossStage = false, spawnMonsterType = MonsterTypeEnum.NONE, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "부서진 거리", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ZOMBIE, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "좀비의 소굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ZOMBIE, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "좀비 군단장", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_1, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "부서진 거리", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ZOMBIE, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "좀비의 소굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ZOMBIE, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "좀비 군단장", isBossStage = true, spawnMonsterType = MonsterTypeEnum.ZOMBIE, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "슬라임 스테이지", lvLimit = 5, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "슬라임 스테이지", lvLimit = 5, stages = new Stage[4]
                 {
-                    new Stage { name = "습지의 시작", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SLIME, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "습지의 시작", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SLIME, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "점액의 늪", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SLIME, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "슬라임 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SLIME, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "슬라임 왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_2, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "슬라임 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SLIME, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "슬라임 왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.SLIME, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "박쥐 스테이지", lvLimit = 10, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "박쥐 스테이지", lvLimit = 10, stages = new Stage[4]
                 {
-                    new Stage { name = "어두운 동굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BAT, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "어두운 동굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BAT, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "박쥐의 소굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BAT, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "박쥐 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BAT, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "박쥐 여왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_1, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "박쥐 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BAT, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "박쥐 여왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.BAT, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "쥐 스테이지", lvLimit = 15, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "쥐 스테이지", lvLimit = 15, stages = new Stage[4]
                 {
-                    new Stage { name = "하수구 입구", isBossStage = false, spawnMonsterType = MonsterTypeEnum.RAT, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "하수구 입구", isBossStage = false, spawnMonsterType = MonsterTypeEnum.RAT, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "쥐의 터널", isBossStage = false, spawnMonsterType = MonsterTypeEnum.RAT, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "쥐의 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.RAT, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "쥐의 왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_2, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "쥐의 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.RAT, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "쥐의 왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.RAT, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "거미 스테이지", lvLimit = 20, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "거미 스테이지", lvLimit = 20, stages = new Stage[4]
                 {
-                    new Stage { name = "거미의 둥지", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SPIDER, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "거미의 둥지", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SPIDER, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "거미줄의 미로", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SPIDER, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "거미 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SPIDER, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "거미 여왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_1, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "거미 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SPIDER, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "거미 여왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.SPIDER, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "까마귀 스테이지", lvLimit = 25, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "까마귀 스테이지", lvLimit = 25, stages = new Stage[4]
                 {
-                    new Stage { name = "까마귀의 둥지", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CROW, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "까마귀의 둥지", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CROW, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "까마귀의 소굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CROW, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "까마귀 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CROW, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "까마귀 군주", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_2, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "까마귀 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CROW, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "까마귀 군주", isBossStage = true, spawnMonsterType = MonsterTypeEnum.CROW, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "고블린 스테이지", lvLimit = 30, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "고블린 스테이지", lvLimit = 30, stages = new Stage[4]
                 {
-                    new Stage { name = "고블린 마을", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GOBLIN, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "고블린 마을", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GOBLIN, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "고블린 요새", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GOBLIN, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "고블린 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GOBLIN, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "고블린 왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_1, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "고블린 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GOBLIN, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "고블린 왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.GOBLIN, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "스켈레톤 스테이지", lvLimit = 35, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "스켈레톤 스테이지", lvLimit = 35, stages = new Stage[4]
                 {
-                    new Stage { name = "망자의 무덤", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SKELETON, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "망자의 무덤", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SKELETON, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "해골의 전당", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SKELETON, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "스켈레톤 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SKELETON, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "스켈레톤 군주", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_2, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "스켈레톤 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.SKELETON, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "스켈레톤 군주", isBossStage = true, spawnMonsterType = MonsterTypeEnum.SKELETON, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "유령 스테이지", lvLimit = 40, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "유령 스테이지", lvLimit = 40, stages = new Stage[4]
                 {
-                    new Stage { name = "유령의 집", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GHOST, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "유령의 집", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GHOST, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "망령의 방", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GHOST, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "유령 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GHOST, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "유령 군주", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_1, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "유령 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.GHOST, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "유령 군주", isBossStage = true, spawnMonsterType = MonsterTypeEnum.GHOST, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "오크 스테이지", lvLimit = 45, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "오크 스테이지", lvLimit = 45, stages = new Stage[4]
                 {
-                    new Stage { name = "오크의 영토", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ORC, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "오크의 영토", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ORC, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "오크의 요새", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ORC, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "오크 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ORC, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "오크 대장", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_2, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "오크 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.ORC, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "오크 대장", isBossStage = true, spawnMonsterType = MonsterTypeEnum.ORC, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "벌레 스테이지", lvLimit = 50, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "벌레 스테이지", lvLimit = 50, stages = new Stage[4]
                 {
-                    new Stage { name = "벌레의 굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.WORM, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "벌레의 굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.WORM, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "벌레의 소굴", isBossStage = false, spawnMonsterType = MonsterTypeEnum.WORM, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "벌레 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.WORM, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "벌레 여왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_1, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "벌레 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.WORM, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "벌레 여왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.WORM, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "베홀더 스테이지", lvLimit = 55, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "베홀더 스테이지", lvLimit = 55, stages = new Stage[4]
                 {
-                    new Stage { name = "베홀더의 방", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BEHOLDER, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "베홀더의 방", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BEHOLDER, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "베홀더의 전당", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BEHOLDER, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "베홀더 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BEHOLDER, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "베홀더 군주", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_2, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "베홀더 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.BEHOLDER, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "베홀더 군주", isBossStage = true, spawnMonsterType = MonsterTypeEnum.BEHOLDER, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }},
-                new Floor { name = "사이클롭스 스테이지", lvLimit = 60, isBossClear = false, stages = new Stage[4]
+                new Floor { name = "사이클롭스 스테이지", lvLimit = 60, stages = new Stage[4]
                 {
-                    new Stage { name = "거인의 영토", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CYCLOPE, spawnCount = 3, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "거인의 영토", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CYCLOPE, spawnCount = 2, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
                     new Stage { name = "거인의 요새", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CYCLOPE, spawnCount = 4, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "사이클롭스 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CYCLOPE, spawnCount = 5, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
-                    new Stage { name = "사이클롭스 왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.MANAGER_1, spawnCount = 1, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
+                    new Stage { name = "사이클롭스 군단", isBossStage = false, spawnMonsterType = MonsterTypeEnum.CYCLOPE, spawnCount = 6, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() },
+                    new Stage { name = "사이클롭스 왕", isBossStage = true, spawnMonsterType = MonsterTypeEnum.CYCLOPE, spawnCount = 0, decorations = new List<DecorationEnum>(), decoration_pos = new List<Vector2>() }
                 }}
             }
         };

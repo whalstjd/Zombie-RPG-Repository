@@ -75,9 +75,9 @@ namespace DataInfo
             return curLv < maxLv && availableMoney >= price;
         }
 
-        public bool TryUpgrade(Item items)
+        public bool TryUpgrade(Possession possession)
         {
-            float availableMoney = items.GetItemCount(ItemTypeEnum.Money);
+            float availableMoney = possession.GetPossessionCount(PossessionTypeEnum.Money);
             if (!CanUpgrade(availableMoney)) return false;
             
             if (targetEnum == UpgradeTargetEnum.WEAPON)
@@ -86,7 +86,7 @@ namespace DataInfo
                 if (Random.value > successRate) return false;
             }
             
-            items.RemoveItem(ItemTypeEnum.Money, (int)price);
+            possession.RemovePossession(PossessionTypeEnum.Money, (int)price);
             curLv++;
             return true;
         }

@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
     public void DoorActive()
     {
         bool is_1_Chapter = (DataManager.Instance.gameData.curFloor_Num < 7) ? true : false;
-        bool isOpen = (cur_Stage.isBossStage == false || cur_Floor.isBossClear) ? true : false;
+        bool isOpen = (cur_Stage.isBossStage == false || DataManager.Instance.gameData.isBossClear[DataManager.Instance.gameData.curFloor_Num]) ? true : false;
 
         stage_Floor_1.SetActive(is_1_Chapter);
         stage_Floor_2.SetActive(is_1_Chapter == false);
@@ -240,7 +240,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < DataManager.Instance.gameData.teamStats.Length; i++)
         {
             if (DataManager.Instance.gameData.teamStats[i] == null) continue;
-            if(DataManager.Instance.gameData.teamMonsterType[i] == MonsterTypeEnum.NONE) continue;
+            if(DataManager.Instance.gameData.teamStats[i].monsterType == MonsterTypeEnum.NONE) continue;
 
             Vector2 pos;
             //위치 설정
@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour
                 pos_y = Random.Range(player.transform.position.y - 2, player.transform.position.y + 2);
                 pos = new Vector2(pos_x, pos_y);
             }
-            GameObject teamObj = Instantiate(DataManager.Instance.monstersPrefab[(int)DataManager.Instance.gameData.teamMonsterType[i]], pos, Quaternion.identity);
+            GameObject teamObj = Instantiate(DataManager.Instance.monstersPrefab[(int)DataManager.Instance.gameData.teamStats[i].monsterType], pos, Quaternion.identity);
 
             //위치가 맵 밖으로 나가면 안되므로 제한
             {
@@ -271,11 +271,10 @@ public class GameManager : MonoBehaviour
                 teamMon.tag = "Team";
                 teamObj.layer = LayerMask.NameToLayer("Team");
                 teamMon.name = "Team" + i;
-                teamMon.monsterStat.entityType = EntityType.TEAM;
                 teamMon.teamNum = i;
                 teamMon.belt.color = new Color(0, 1, 0, 200f / 255f);
-                teamMon.monsterType = DataManager.Instance.gameData.teamMonsterType[i];
                 teamMon.monsterStat = DataManager.Instance.gameData.teamStats[i];
+                teamMon.monsterStat.Initialize(teamObj);
                 teamMon.transform.SetParent(entityParent);
                 teamMon.curState = MonsterState.MOVE;
                 UIManager.Instance.NewMonsterUI(i, true, teamMon);
@@ -285,7 +284,7 @@ public class GameManager : MonoBehaviour
 
     void BossSpawn()
     {
-        if (cur_Stage.isBossStage == false || cur_Floor.isBossClear)
+        if (cur_Stage.isBossStage == false || DataManager.Instance.gameData.isBossClear[DataManager.Instance.gameData.curFloor_Num])
             return;
         //위치 설정
         Vector2 pos = new Vector2(4, 0);
@@ -294,12 +293,12 @@ public class GameManager : MonoBehaviour
         //Other Settings
         {
             Monster bossMon = DataManager.Instance.bossMonster = bossObj.GetComponent<Monster>();
-            bossMon.tag = "Enemy";
+            bossMon.tag = "Boss";
             bossObj.layer = LayerMask.NameToLayer("Enemy");
             bossMon.name = "Boss";
-            bossMon.monsterStat.entityType = EntityType.BOSS;
             bossMon.teamNum = 0;
             bossMon.belt.color = new Color(1, 0, 0, 200f / 255f);
+            bossMon.monsterStat.Initialize(bossObj);
             bossMon.transform.SetParent(entityParent);
         }
     }
@@ -322,12 +321,13 @@ public class GameManager : MonoBehaviour
                 //Other Settings
                 {
                     Monster enemyMon = DataManager.Instance.enemyMonsters[i] = enemyObj.GetComponent<Monster>();
-                    enemyMon.tag = "Enemy";
+                    enemyObj.tag = "Enemy";
                     enemyObj.layer = LayerMask.NameToLayer("Enemy");
                     enemyMon.name = "Enemy" + i;
-                    enemyMon.monsterStat.entityType = EntityType.ENEMY;
                     enemyMon.teamNum = i;
                     enemyMon.belt.color = new Color(1, 0, 0, 200f / 255f);
+                    enemyMon.monsterStat.monsterType = cur_Stage.spawnMonsterType;
+                    enemyMon.monsterStat.Initialize(enemyObj);
                     enemyMon.transform.SetParent(entityParent);
                 }
             }
@@ -343,9 +343,10 @@ public class GameManager : MonoBehaviour
         {
             // 팀의 수를 세는 로직
             int teamCount = 0;
-            for (int i = 0; i < DataManager.Instance.gameData.teamMonsterType.Length; i++)
+            for (int i = 0; i < DataManager.Instance.gameData.teamStats.Length; i++)
             {
-                if (DataManager.Instance.gameData.teamMonsterType[i] != MonsterTypeEnum.NONE)
+                if (DataManager.Instance.gameData.teamStats[i] != null && 
+                    DataManager.Instance.gameData.teamStats[i].monsterType != MonsterTypeEnum.NONE)
                 {
                     teamCount++;
                 }
@@ -358,7 +359,7 @@ public class GameManager : MonoBehaviour
             int enemyCount = 0;
             foreach (var entity in DataManager.Instance.enemyMonsters)
             {
-                if (entity != null && entity.monsterStat.entityType == EntityType.ENEMY)
+                if (entity != null && entity.gameObject.CompareTag("Enemy"))
                 {
                     enemyCount++;
                 }
@@ -375,7 +376,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < DataManager.Instance.gameData.teamStats.Length; i++)
         {
             if (DataManager.Instance.gameData.teamStats[i] == null) continue;
-            if (DataManager.Instance.gameData.teamStats[i].entityType == EntityType.TEAM)
+            if (DataManager.Instance.teamMonsters[i] != null && DataManager.Instance.teamMonsters[i].gameObject.CompareTag("Team"))
                 return i;
         }
         return -1;
@@ -402,31 +403,38 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void TeamChange(Monster mon, bool _isTeam)
     {
-        if (mon.monsterStat.entityType == EntityType.TEAM)
+        if (mon.gameObject.CompareTag("Team"))
         {
-            mon.monsterStat.entityType = _isTeam ? EntityType.TEAM : EntityType.ENEMY;
-            mon.belt.color = mon.monsterStat.entityType == EntityType.TEAM ? new Color(0, 1, 0, 200f / 255f) : new Color(1, 0, 0, 200f / 255f);
+            mon.tag = _isTeam ? "Team" : "Enemy";
+            mon.gameObject.layer = LayerMask.NameToLayer(_isTeam ? "Team" : "Enemy");
+            mon.belt.color = _isTeam ? new Color(0, 1, 0, 200f / 255f) : new Color(1, 0, 0, 200f / 255f);
             mon.monsterStat.hp = mon.monsterStat.Maxhp;
 
             //Enemy to Team
             if (_isTeam == true)
             {
-                mon.tag = "Team";
-                mon.gameObject.layer = LayerMask.NameToLayer("Team");
-
                 // 기존 데이터 제거
                 DataManager.Instance.enemyMonsters[mon.teamNum] = null;
                 UIManager.Instance.DestroyMonsterUI(mon.teamNum, !_isTeam);
 
                 //팀 번호 찾기
-                mon.teamNum = Get_Team_First_None(true);
-                if (mon.teamNum == -1) Debug.LogError("Team Num is Error. View GameManager Script.");
+                int newTeamNum = -1;
+                for (int i = 0; i < DataManager.Instance.gameData.teamStats.Length; i++)
+                {
+                    if (DataManager.Instance.teamMonsters[i] == null || !DataManager.Instance.teamMonsters[i].gameObject.CompareTag("Team"))
+                    {
+                        newTeamNum = i;
+                        break;
+                    }
+                }
+                if (newTeamNum == -1) Debug.LogError("Team Num is Error. View GameManager Script.");
 
                 //팀 데이터 넣기
+                mon.teamNum = newTeamNum;
                 mon.name = "Team" + mon.teamNum;
                 DataManager.Instance.teamMonsters[mon.teamNum] = mon;
                 DataManager.Instance.gameData.teamStats[mon.teamNum] = mon.monsterStat;
-                DataManager.Instance.gameData.teamMonsterType[mon.teamNum] = DataManager.Instance.teamMonsters[mon.teamNum].monsterType;
+                DataManager.Instance.gameData.teamStats[mon.teamNum].monsterType = mon.monsterStat.monsterType;
                 mon.monsterStat.hp = mon.monsterStat.Maxhp;
                 UIManager.Instance.NewMonsterUI(mon.teamNum, _isTeam, mon);
                 if (Get_Entity_Count(false) == 0) Invoke("EnemySpawn", 1f);
@@ -434,20 +442,25 @@ public class GameManager : MonoBehaviour
             //Team to Enemy
             else
             {
-                mon.tag = "Enemy";
-                mon.gameObject.layer = LayerMask.NameToLayer("Enemy");
-
                 // 기존 데이터 제거
                 DataManager.Instance.teamMonsters[mon.teamNum] = null;
                 DataManager.Instance.gameData.teamStats[mon.teamNum] = null;
-                DataManager.Instance.gameData.teamMonsterType[mon.teamNum] = 0;
                 UIManager.Instance.DestroyMonsterUI(mon.teamNum, !_isTeam);
 
                 //팀 번호 찾기
-                mon.teamNum = Get_Team_First_None(false);
-                if (mon.teamNum == -1) Debug.LogError("Team Num is Error. View GameManager Script.");
+                int newEnemyNum = -1;
+                for (int i = 0; i < DataManager.Instance.enemyMonsters.Length; i++)
+                {
+                    if (DataManager.Instance.enemyMonsters[i] == null)
+                    {
+                        newEnemyNum = i;
+                        break;
+                    }
+                }
+                if (newEnemyNum == -1) Debug.LogError("Enemy Num is Error. View GameManager Script.");
 
                 //팀 데이터 넣기
+                mon.teamNum = newEnemyNum;
                 mon.name = "Enemy" + mon.teamNum;
                 DataManager.Instance.enemyMonsters[mon.teamNum] = mon;
                 UIManager.Instance.NewMonsterUI(mon.teamNum, _isTeam, mon);

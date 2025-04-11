@@ -127,7 +127,7 @@ public class Player : MonoBehaviour {
         {
             GameManager.Instance.PlayAudio(GameManager.Instance.damaged_Clip);
             Debug.Log("Still Live");
-            if (DataManager.Instance.gameData.playerStat.autoPotion && DataManager.Instance.gameData.playerStat.hp * 2 < DataManager.Instance.gameData.playerStat.Maxhp && DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.Potion) > 0)
+            if (DataManager.Instance.gameData.playerStat.autoPotion && DataManager.Instance.gameData.playerStat.hp * 2 < DataManager.Instance.gameData.playerStat.Maxhp && DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.Potion) > 0)
             {
                 DataManager.Instance.gameData.playerStat.UsePotion();
             }
@@ -138,13 +138,13 @@ public class Player : MonoBehaviour {
         DataManager.Instance.SaveGameData();
     }
 
-    public void PickUp_Item(ItemTypeEnum _itemTypeEnum)
+    public void PickUp_Possession(PossessionTypeEnum _possessionTypeEnum)
     {
         if (isDie) return;
 
-        DataManager.Instance.gameData.items.AddItem(_itemTypeEnum, 1);
+        DataManager.Instance.gameData.possession.AddPossession(_possessionTypeEnum, 1);
         UIManager.Instance.Goods_UI_Update();
-        if (DataManager.Instance.gameData.playerStat.autoPotion && DataManager.Instance.gameData.playerStat.hp * 2 < DataManager.Instance.gameData.playerStat.Maxhp && DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.Potion) > 0)
+        if (DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.Potion) > 0)
         {
             DataManager.Instance.gameData.playerStat.UsePotion();
         }

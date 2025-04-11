@@ -81,13 +81,13 @@ public class SettingPanel : MonoBehaviour
         if (moneyIdx != -1)
         {
             DataManager.Instance.gameData.usedCoupons.Add(couponField.text.ToLower());
-            DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.Money, 500);
+            DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.Money, 500);
             UIManager.Instance.Message("500원 획득!");
         }
         else if (potionIdx != -1)
         {
             DataManager.Instance.gameData.usedCoupons.Add(couponField.text.ToLower());
-            DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.Potion, 10);
+            DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.Potion, 10);
             UIManager.Instance.Message("포션 10개 획득!");
         }
         else

@@ -189,7 +189,7 @@ public class UpgradePanel : MonoBehaviour
         for (int i = 0; i < buttons.Length; i++)
         {
             var upgrade = CreateUpgrade(target, i);
-            bool canUpgrade = upgrade.CanUpgrade(gameData.items.GetItemCount(ItemTypeEnum.Money)) && upgrade.curLv < upgrade.maxLv;
+            bool canUpgrade = upgrade.CanUpgrade(gameData.possession.GetPossessionCount(PossessionTypeEnum.Money)) && upgrade.curLv < upgrade.maxLv;
 
             if (!canUpgrade)
             {
@@ -218,13 +218,13 @@ public class UpgradePanel : MonoBehaviour
     {
         var upgrade = CreateUpgrade(target, index);
 
-        if (!upgrade.CanUpgrade(gameData.items.GetItemCount(ItemTypeEnum.Money)))
+        if (!upgrade.CanUpgrade(gameData.possession.GetPossessionCount(PossessionTypeEnum.Money)))
         {
             GameManager.Instance.PlayAudio(GameManager.Instance.unupgradable_Clip);
             return;
         }
 
-        if (upgrade.TryUpgrade(gameData.items))
+        if (upgrade.TryUpgrade(gameData.possession))
         {
             SetUpgradeLevel(target, index, upgrade.curLv);
             GameManager.Instance.PlayAudio(GameManager.Instance.upgradable_Clip);

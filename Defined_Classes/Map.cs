@@ -14,7 +14,6 @@ namespace DataInfo
     {
         public string name;
         public int lvLimit = 1;
-        public bool isBossClear = false;
         public Stage[] stages;
     }
 

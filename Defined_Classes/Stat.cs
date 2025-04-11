@@ -6,7 +6,6 @@ namespace DataInfo
     public class Stat
     {
         public string _name = "";
-        public EntityType entityType = EntityType.ENEMY;  // 기본값은 ENEMY
         public bool autoPotion = false;
         public int lv = 1;
         public float cur_Exp = 0;
@@ -30,7 +29,9 @@ namespace DataInfo
         public int[] trainingMaxPoint = new int[6];
 
         public float hp;
-
+        public GameObject gameObject;
+        public MonsterTypeEnum monsterType;
+        
         private float damage;
         private float attackSpeed;
         private float maxHP;
@@ -38,13 +39,9 @@ namespace DataInfo
         private float money_Value;
         private float item_Value;
 
-        // private float speed;
-        // private float catch_Value;
-
         public Stat()
         {
             _name = "";
-            entityType = EntityType.ENEMY;
             autoPotion = false;
             lv = 1;
             cur_Exp = 0;
@@ -52,10 +49,12 @@ namespace DataInfo
             trainingCurPoint = new int[6];
             trainingMaxPoint = new int[6];
             hp = 30; // 기본 HP 값으로 설정
+            monsterType = MonsterTypeEnum.NONE; // 기본값 설정
         }
 
-        public void Initialize()
+        public void Initialize(GameObject obj = null)
         {
+            gameObject = obj;
             hp = Maxhp; // MaxHP와 동일하게 설정
         }
 
@@ -133,11 +132,11 @@ namespace DataInfo
                 float teamBonus = 0;
                 float trainingBonus = GetTrainingValue(TrainingTypeEnum.AttackDamage);
 
-                if (entityType == EntityType.PLAYER)
+                if (gameObject.CompareTag("Player"))
                 {
                     playerBonus = GetUpgradeValue(UpgradeTargetEnum.PLAYER, UpgradeTypeEnum.AttackDamage);
                 }
-                else if (entityType == EntityType.TEAM)
+                else if (gameObject.CompareTag("Team"))
                 {
                     teamBonus = GetUpgradeValue(UpgradeTargetEnum.TEAM, UpgradeTypeEnum.AttackDamage);
                 }
@@ -155,11 +154,11 @@ namespace DataInfo
                 float teamBonus = 0;
                 float trainingBonus = GetTrainingValue(TrainingTypeEnum.AttackSpeed);
 
-                if (entityType == EntityType.PLAYER)
+                if (gameObject.CompareTag("Player"))
                 {
                     playerBonus = GetUpgradeValue(UpgradeTargetEnum.PLAYER, UpgradeTypeEnum.AttackSpeed);
                 }
-                else if (entityType == EntityType.TEAM)
+                else if (gameObject.CompareTag("Team"))
                 {
                     teamBonus = GetUpgradeValue(UpgradeTargetEnum.TEAM, UpgradeTypeEnum.AttackSpeed);
                 }
@@ -178,14 +177,17 @@ namespace DataInfo
                 float weaponBonus = 0;
                 float trainingBonus = GetTrainingValue(TrainingTypeEnum.MaxHP);
 
-                if (entityType == EntityType.PLAYER)
+                if (gameObject != null)
                 {
-                    playerBonus = GetUpgradeValue(UpgradeTargetEnum.PLAYER, UpgradeTypeEnum.MaxHP);
-                    weaponBonus = GetUpgradeValue(UpgradeTargetEnum.WEAPON, UpgradeTypeEnum.MaxHP);
-                }
-                else if (entityType == EntityType.TEAM)
-                {
-                    teamBonus = GetUpgradeValue(UpgradeTargetEnum.TEAM, UpgradeTypeEnum.MaxHP);
+                    if (gameObject.CompareTag("Player"))
+                    {
+                        playerBonus = GetUpgradeValue(UpgradeTargetEnum.PLAYER, UpgradeTypeEnum.MaxHP);
+                        weaponBonus = GetUpgradeValue(UpgradeTargetEnum.WEAPON, UpgradeTypeEnum.MaxHP);
+                    }
+                    else if (gameObject.CompareTag("Team"))
+                    {
+                        teamBonus = GetUpgradeValue(UpgradeTargetEnum.TEAM, UpgradeTypeEnum.MaxHP);
+                    }
                 }
 
                 return maxHP = 30 + (lv * 3) + weaponBonus + (playerBonus + teamBonus + trainingBonus) * trainingCurPoint[(int)TrainingTypeEnum.MaxHP] * 16.5f;
@@ -201,11 +203,11 @@ namespace DataInfo
                 float teamBonus = 0;
                 float trainingBonus = GetTrainingValue(TrainingTypeEnum.Exp);
 
-                if (entityType == EntityType.PLAYER)
+                if (gameObject.CompareTag("Player"))
                 {
                     playerBonus = GetUpgradeValue(UpgradeTargetEnum.PLAYER, UpgradeTypeEnum.Exp);
                 }
-                else if (entityType == EntityType.TEAM)
+                else if (gameObject.CompareTag("Team"))
                 {
                     teamBonus = GetUpgradeValue(UpgradeTargetEnum.TEAM, UpgradeTypeEnum.Exp);
                 }
@@ -223,11 +225,11 @@ namespace DataInfo
                 float teamBonus = 0;
                 float trainingBonus = GetTrainingValue(TrainingTypeEnum.Money);
 
-                if (entityType == EntityType.PLAYER)
+                if (gameObject.CompareTag("Player"))
                 {
                     playerBonus = GetUpgradeValue(UpgradeTargetEnum.PLAYER, UpgradeTypeEnum.Money);
                 }
-                else if (entityType == EntityType.TEAM)
+                else if (gameObject.CompareTag("Team"))
                 {
                     teamBonus = GetUpgradeValue(UpgradeTargetEnum.TEAM, UpgradeTypeEnum.Money);
                 }
@@ -245,11 +247,11 @@ namespace DataInfo
                 float teamBonus = 0;
                 float trainingBonus = GetTrainingValue(TrainingTypeEnum.Item);
 
-                if (entityType == EntityType.PLAYER)
+                if (gameObject.CompareTag("Player"))
                 {
                     playerBonus = GetUpgradeValue(UpgradeTargetEnum.PLAYER, UpgradeTypeEnum.Item);
                 }
-                else if (entityType == EntityType.TEAM)
+                else if (gameObject.CompareTag("Team"))
                 {
                     teamBonus = GetUpgradeValue(UpgradeTargetEnum.TEAM, UpgradeTypeEnum.Item);
                 }
@@ -261,42 +263,29 @@ namespace DataInfo
 
         public void UsePotion()
         {
-            if (DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.Potion) <= 0)
+            if (hp < Maxhp)
             {
-                UIManager.Instance.Message("포션이 부족합니다.");
-                return;
+                hp = Mathf.Min(hp + 30, Maxhp);
+                DataManager.Instance.gameData.possession.RemovePossession(PossessionTypeEnum.Potion, 1);
+                UIManager.Instance.Goods_UI_Update();
             }
-            if (hp <= 0) return;
-            DataManager.Instance.gameData.items.RemoveItem(ItemTypeEnum.Potion, 1);
-            hp += Maxhp / 2;
-            if (hp > Maxhp)
-                hp = Maxhp;
-            GameManager.Instance.PlayAudio(GameManager.Instance.heal_Clip);
         }
 
         public bool SetExp(float value)
         {
-            bool isLvUp = false;
-            cur_Exp += value * Exp_Plus;
-            while (cur_Exp >= full_Exp)
+            cur_Exp += value;
+            if (cur_Exp >= full_Exp)
             {
-                lv++;
                 cur_Exp -= full_Exp;
-                isLvUp = true;
+                lv++;
+                return true;
             }
-            return isLvUp;
+            return false;
         }
 
-        public void SetPoint(TrainingTypeEnum type, int count)
+        public void SetPoint(TrainingTypeEnum type, int value)
         {
-            while (trainingRemainPoint > 0 && count > 0)
-            {
-                if (trainingCurPoint[(int)type] >= trainingMaxPoint[(int)type]) return;
-                if (type == TrainingTypeEnum.MaxHP)
-                    hp += 3;
-                trainingCurPoint[(int)type]++;
-                count--;
-            }
+            trainingCurPoint[(int)type] += value;
         }
     }
 } 

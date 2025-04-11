@@ -5,17 +5,12 @@ using UnityEngine.UI;
 
 public class Door : MonoBehaviour
 {
-    public Transform sliderPos;
     public Slider doorSlider;
 
     public Vector2Int dir;
     public float time = 0;
     public float enterTime = 1;
 
-    private void Start()
-    {
-        doorSlider.transform.position = sliderPos.position;
-    }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

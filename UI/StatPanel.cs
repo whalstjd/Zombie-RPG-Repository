@@ -46,11 +46,6 @@ public class StatPanel : MonoBehaviour
     [Header("Exile")]
     public GameObject exileWindowObj;
 
-
-    private void Start()
-    {
-        SelectedStat = DataManager.Instance.gameData.playerStat;
-    }
     public void ShowOtherStats()
     {
         stat_ShowOther.localScale *= -1;
@@ -68,8 +63,9 @@ public class StatPanel : MonoBehaviour
 
     public void SelectTeam(int _num)
     {
-        //������ ���� ������ '�÷��̾ �ƴϰ�' '����Ÿ���� none(������)'�̸� ����
-        if (_num != -1 && DataManager.Instance.gameData.teamMonsterType[_num] == 0) return;
+        //팀이 없거나 '플레이어가 아니고' '몬스터 타입이 none(없음)'이면 리턴
+        if (_num != -1 && (DataManager.Instance.teamMonsters[_num] == null || 
+            DataManager.Instance.gameData.teamStats[_num].monsterType == MonsterTypeEnum.NONE)) return;
 
         gameObject.SetActive(true);
 
@@ -179,14 +175,14 @@ public class StatPanel : MonoBehaviour
 
     public void ExileTeam()
     {
-        if (SelectedStat.entityType == EntityType.PLAYER)
+        if (DataManager.Instance.teamMonsters[selected_Team_num].gameObject.CompareTag("Player"))
         {
             UIManager.Instance.Message("플레이어를 추방할 수 없습니다!");
             gameObject.SetActive(false);
             return;
         }
 
-        if (SelectedStat.entityType != EntityType.TEAM)
+        if (!DataManager.Instance.teamMonsters[selected_Team_num].gameObject.CompareTag("Team"))
         {
             UIManager.Instance.Message("해당 몬스터는 이미 적입니다!");
             gameObject.SetActive(false);

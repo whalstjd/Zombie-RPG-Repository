@@ -22,7 +22,7 @@ public class Net : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             Monster collMonster = collision.GetComponent<Monster>();
-            if (collMonster.monsterStat.entityType == EntityType.BOSS) return;
+            if (collMonster.gameObject.CompareTag("Boss")) return;
             collMonster.StartCoroutine(collMonster.CaughtNet(Random.Range(1.5f, 3.5f)));
             Destroy(gameObject);
         }

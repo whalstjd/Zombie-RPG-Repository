@@ -8,12 +8,10 @@ namespace DataInfo
     {
         // 플레이어 스탯
         public Stat playerStat;
-        // 팀 몬스터 타입
-        public MonsterTypeEnum[] teamMonsterType;
         // 팀 몬스터 스탯
         public Stat[] teamStats;
         // 아이템 목록
-        public Item items;
+        public Possession possession;
         // 플레이어 업그레이드 레벨
         public int[] playerUpgradeLv;
         public int[] teamUpgradeLv;

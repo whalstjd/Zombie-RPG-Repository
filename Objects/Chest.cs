@@ -23,13 +23,13 @@ public class Chest : MonoBehaviour
             switch (chest_Type)
             {
                 case Chest_Type.CHEST_0:
-                    GetGoods();
+                    OpenChest();
                     break;
                 case Chest_Type.CHEST_1:
-                    if(DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.SilverKey) > 0)
+                    if(DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.SilverKey) > 0)
                     {
-                        DataManager.Instance.gameData.items.RemoveItem(ItemTypeEnum.SilverKey, 1);
-                        GetGoods();
+                        DataManager.Instance.gameData.possession.RemovePossession(PossessionTypeEnum.SilverKey, 1);
+                        OpenChest();
                     }
                     else
                     {
@@ -37,10 +37,10 @@ public class Chest : MonoBehaviour
                     }
                     break;
                 case Chest_Type.CHEST_2:
-                    if (DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.GoldKey) > 0)
+                    if (DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.GoldKey) > 0)
                     {
-                        DataManager.Instance.gameData.items.RemoveItem(ItemTypeEnum.GoldKey, 1);
-                        GetGoods();
+                        DataManager.Instance.gameData.possession.RemovePossession(PossessionTypeEnum.GoldKey, 1);
+                        OpenChest();
                     }
                     else
                     {
@@ -51,7 +51,7 @@ public class Chest : MonoBehaviour
         }
     }
 
-    void GetGoods()
+    void OpenChest()
     {
         GameManager.Instance.PlayAudio(GameManager.Instance.chest_Unlock_Clip);
 
@@ -62,7 +62,7 @@ public class Chest : MonoBehaviour
             case 0:
                 value = Random.Range(randPotion.x, randPotion.y-1);
                 UIManager.Instance.Message("포션 " + value + "개 획득!");
-                DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.Potion, value);
+                DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.Potion, value);
                 break;
             case 1:
                 value = (int)(DataManager.Instance.gameData.playerStat.full_Exp * Random.Range(randExp.x, randExp.y));
@@ -72,12 +72,12 @@ public class Chest : MonoBehaviour
             case 2:
                 value = Random.Range(randSilver.x, randSilver.y - 1);
                 UIManager.Instance.Message("실버 키 " + value + "개 획득!");
-                DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.SilverKey, value);
+                DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.SilverKey, value);
                 break;
             case 3:
                 value = Random.Range(randGold.x, randGold.y - 1);
                 UIManager.Instance.Message("골드 키 " + value + "개 획득!");
-                DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.GoldKey, value);
+                DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.GoldKey, value);
                 break;
         }
         Debug.Log(value);

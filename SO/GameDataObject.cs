@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using DataInfo;
 using System;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [CreateAssetMenu(fileName = "GameDataSO", menuName = "Create GameData", order = 1)]
 public class GameDataObject : ScriptableObject
@@ -26,22 +28,15 @@ public class GameDataObject : ScriptableObject
         gameData.playerStat = new Stat
         {
             _name = "Player",
-            entityType = EntityType.PLAYER,
             autoPotion = false,
             lv = 1,
             cur_Exp = 0,
             exp_Difficulty = 1,
             trainingCurPoint = new int[6] { 0, 0, 0, 0, 0, 0 },
             trainingMaxPoint = new int[6] { 30, 30, 30, 30, 30, 30 },
+            monsterType = MonsterTypeEnum.NONE
         };
         gameData.playerStat.Initialize();
-
-        // 팀 몬스터 타입 기본값 설정
-        gameData.teamMonsterType = new MonsterTypeEnum[6];
-        for (int i = 0; i < gameData.teamMonsterType.Length; i++)
-        {
-            gameData.teamMonsterType[i] = MonsterTypeEnum.NONE;
-        }
 
         // 팀 몬스터 스탯 기본값 설정
         gameData.teamStats = new Stat[6];
@@ -50,23 +45,23 @@ public class GameDataObject : ScriptableObject
             gameData.teamStats[i] = new Stat
             {
                 _name = "",
-                entityType = EntityType.TEAM,
                 autoPotion = false,
                 lv = 1,
                 cur_Exp = 0,
                 exp_Difficulty = 0,
                 trainingCurPoint = new int[6] { 0, 0, 0, 0, 0, 0 },
                 trainingMaxPoint = new int[6] { 30, 30, 30, 30, 30, 30 },
+                monsterType = MonsterTypeEnum.NONE
             };
             gameData.teamStats[i].Initialize();
         }
 
         // 아이템 기본값 설정
-        gameData.items = new Item();
-        gameData.items.AddItem(ItemTypeEnum.Money, 300);
-        gameData.items.AddItem(ItemTypeEnum.Potion, 10);
-        gameData.items.AddItem(ItemTypeEnum.GoldKey, 1);
-        gameData.items.AddItem(ItemTypeEnum.SilverKey, 2);
+        gameData.possession = new Possession();
+        gameData.possession.AddPossession(PossessionTypeEnum.Money, 300);
+        gameData.possession.AddPossession(PossessionTypeEnum.Potion, 10);
+        gameData.possession.AddPossession(PossessionTypeEnum.GoldKey, 1);
+        gameData.possession.AddPossession(PossessionTypeEnum.SilverKey, 2);
 
         // 업그레이드 레벨 기본값 설정
         gameData.playerUpgradeLv = new int[6] { 0, 0, 0, 0, 0, 0 };
@@ -101,10 +96,11 @@ public class GameDataObject : ScriptableObject
             gameData.last_Daily_Month[i] = 4;
             gameData.last_Daily_Day[i] = 10;
         }
-
+#if UNITY_EDITOR
         // 변경사항 저장
         EditorUtility.SetDirty(this);
         AssetDatabase.SaveAssets();
+#endif
     }
 }
 

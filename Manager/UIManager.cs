@@ -152,7 +152,7 @@ public class UIManager : MonoBehaviour
         // 팀 몬스터 UI 업데이트
         for (int i = 0; i < DataManager.Instance.teamMonsters.Length; i++)
         {
-            if (DataManager.Instance.gameData.teamMonsterType[i] == MonsterTypeEnum.NONE)
+            if (DataManager.Instance.gameData.teamStats[i].monsterType == MonsterTypeEnum.NONE)
                 break;
             team_Lv_Text[i].text = DataManager.Instance.teamMonsters[i].monsterStat.lv.ToString();
             team_HP_Sliders[i].value = DataManager.Instance.teamMonsters[i].monsterStat.hp / DataManager.Instance.teamMonsters[i].monsterStat.Maxhp;
@@ -177,10 +177,10 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void Goods_UI_Update()
     {
-        money_Text.text = ((int)DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.Money)).ToString("###,###,##0");
-        potion_Text.text = DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.Potion).ToString();
-        goldKey_Text.text = DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.GoldKey).ToString();
-        silverKey_Text.text = DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.SilverKey).ToString();
+        money_Text.text = ((int)DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.Money)).ToString("###,###,##0");
+        potion_Text.text = DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.Potion).ToString();
+        goldKey_Text.text = DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.GoldKey).ToString();
+        silverKey_Text.text = DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.SilverKey).ToString();
     }
 
     /// <summary>
@@ -188,8 +188,8 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void Boss_UI_Update()
     {
-        boss_HP_Slider.gameObject.SetActive(GameManager.Instance.cur_Stage.isBossStage && GameManager.Instance.cur_Floor.isBossClear == false);
-        if (GameManager.Instance.cur_Stage.isBossStage == false || GameManager.Instance.cur_Floor.isBossClear) return;
+        boss_HP_Slider.gameObject.SetActive(DataManager.Instance.gameConfig.map.floors[DataManager.Instance.gameData.curFloor_Num].stages[DataManager.Instance.gameData.curStage_Num].isBossStage && DataManager.Instance.gameData.isBossClear[DataManager.Instance.gameData.curFloor_Num] == false);
+        if (DataManager.Instance.gameConfig.map.floors[DataManager.Instance.gameData.curFloor_Num].stages[DataManager.Instance.gameData.curStage_Num].isBossStage == false || DataManager.Instance.gameData.isBossClear[DataManager.Instance.gameData.curFloor_Num]) return;
         boss_HP_Slider.value = DataManager.Instance.bossMonster.monsterStat.hp / DataManager.Instance.bossMonster.monsterStat.Maxhp;
         boss_HP_Text.text = (int)DataManager.Instance.bossMonster.monsterStat.hp + " / " + (int)DataManager.Instance.bossMonster.monsterStat.Maxhp;
     }

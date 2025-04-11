@@ -15,18 +15,17 @@ MonoBehaviour:
   gameData:
     playerStat:
       _name: Player
-      entityType: 0
       autoPotion: 0
       lv: 1
       cur_Exp: 0
       exp_Difficulty: 1
       trainingCurPoint: 000000000000000000000000000000000000000000000000
       trainingMaxPoint: 1e0000001e0000001e0000001e0000001e0000001e000000
-      hp: 34
-    teamMonsterType: 000000000000000000000000000000000000000000000000
+      hp: 33
+      gameObject: {fileID: 0}
+      monsterType: 0
     teamStats:
     - _name: 
-      entityType: 1
       autoPotion: 0
       lv: 1
       cur_Exp: 0
@@ -34,8 +33,9 @@ MonoBehaviour:
       trainingCurPoint: 000000000000000000000000000000000000000000000000
       trainingMaxPoint: 1e0000001e0000001e0000001e0000001e0000001e000000
       hp: 33
+      gameObject: {fileID: 0}
+      monsterType: 0
     - _name: 
-      entityType: 1
       autoPotion: 0
       lv: 1
       cur_Exp: 0
@@ -43,8 +43,9 @@ MonoBehaviour:
       trainingCurPoint: 000000000000000000000000000000000000000000000000
       trainingMaxPoint: 1e0000001e0000001e0000001e0000001e0000001e000000
       hp: 33
+      gameObject: {fileID: 0}
+      monsterType: 0
     - _name: 
-      entityType: 1
       autoPotion: 0
       lv: 1
       cur_Exp: 0
@@ -52,8 +53,9 @@ MonoBehaviour:
       trainingCurPoint: 000000000000000000000000000000000000000000000000
       trainingMaxPoint: 1e0000001e0000001e0000001e0000001e0000001e000000
       hp: 33
+      gameObject: {fileID: 0}
+      monsterType: 0
     - _name: 
-      entityType: 1
       autoPotion: 0
       lv: 1
       cur_Exp: 0
@@ -61,8 +63,9 @@ MonoBehaviour:
       trainingCurPoint: 000000000000000000000000000000000000000000000000
       trainingMaxPoint: 1e0000001e0000001e0000001e0000001e0000001e000000
       hp: 33
+      gameObject: {fileID: 0}
+      monsterType: 0
     - _name: 
-      entityType: 1
       autoPotion: 0
       lv: 1
       cur_Exp: 0
@@ -70,8 +73,9 @@ MonoBehaviour:
       trainingCurPoint: 000000000000000000000000000000000000000000000000
       trainingMaxPoint: 1e0000001e0000001e0000001e0000001e0000001e000000
       hp: 33
+      gameObject: {fileID: 0}
+      monsterType: 0
     - _name: 
-      entityType: 1
       autoPotion: 0
       lv: 1
       cur_Exp: 0
@@ -79,7 +83,9 @@ MonoBehaviour:
       trainingCurPoint: 000000000000000000000000000000000000000000000000
       trainingMaxPoint: 1e0000001e0000001e0000001e0000001e0000001e000000
       hp: 33
-    items:
+      gameObject: {fileID: 0}
+      monsterType: 0
+    possession:
       money: 300
       potion: 10
       goldKey: 1

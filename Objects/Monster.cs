@@ -5,10 +5,29 @@ using UnityEngine;
 using UnityEngine.AdaptivePerformance.VisualScripting;
 
 public enum MonsterState { IDLE, MOVE, ATTACK, DAMAGED, CAUGHT_NET, DIE }
+public enum MonsterTypeEnum
+{
+    NONE,
+    ZOMBIE,
+    SLIME,
+    BAT,
+    RAT,
+    SPIDER,
+    CROW,
+    GOBLIN,
+    SKELETON,
+    GHOST,
+    ORC,
+    WORM,
+    BEHOLDER,
+    CYCLOPE,
+    DEMON,
+    MANAGER_1,
+    MANAGER_2,
+}
 
 public class Monster : MonoBehaviour
 {
-    public MonsterTypeEnum monsterType = MonsterTypeEnum.BAT;
     public MonsterState curState = MonsterState.IDLE;
     public Animator anim;
 
@@ -39,9 +58,9 @@ public class Monster : MonoBehaviour
 
     private void Start()
     {
-        if (monsterStat.entityType == EntityType.ENEMY)
+        if (gameObject.CompareTag("Enemy"))
         {
-            monsterStat._name = System.Enum.GetName(typeof(MonsterTypeEnum), monsterType);
+            monsterStat._name = System.Enum.GetName(typeof(MonsterTypeEnum), monsterStat.monsterType);
             //레벨
             monsterStat.lv = Random.Range(rands.lv_Rand.x, rands.lv_Rand.y);
             monsterStat.cur_Exp = 0;
@@ -51,8 +70,7 @@ public class Monster : MonoBehaviour
             InitializeTrainingPoints();
             
             //팀
-            monsterStat.entityType = EntityType.ENEMY;
-            belt.color = monsterStat.entityType == EntityType.TEAM ? new Color(0, 1, 0, 200f / 255f) : new Color(1, 0, 0, 200f / 255f);
+            belt.color = gameObject.CompareTag("Team") ? new Color(0, 1, 0, 200f / 255f) : new Color(1, 0, 0, 200f / 255f);
 
             //보상
             InitializeDrops();
@@ -64,9 +82,11 @@ public class Monster : MonoBehaviour
             monsterStat.hp = monsterStat.Maxhp;
         }
 
-        if (monsterStat.entityType == EntityType.BOSS)
+        if (gameObject.CompareTag("Boss"))
         {
             monsterStat.hp = monsterStat.Maxhp;
+            monsterStat._name = System.Enum.GetName(typeof(MonsterTypeEnum), monsterStat.monsterType);
+            belt.color = new Color(1, 0, 0, 200f / 255f);
             UIManager.Instance.Boss_UI_Update();
         }
         UIManager.Instance.Monster_UI_Update();
@@ -97,10 +117,39 @@ public class Monster : MonoBehaviour
 
                 Vector3 trPivotPos = GetComponent<Pivot>().tr.position;
 
-                //적일때
-                if (monsterStat.entityType == EntityType.ENEMY)
+                //보스일때
+                if (gameObject.CompareTag("Boss"))
                 {
-                    float range = monsterStat.entityType == EntityType.BOSS ? 9f : 4.5f;
+                    float range = 9f;
+                    Collider2D[] sight = Physics2D.OverlapCircleAll(trPivotPos, range, LayerMask.GetMask("Team"));
+                    
+                    if (sight.Length > 0)
+                    {
+                        target = sight[0].gameObject;
+                        Collider2D[] attackRange = Physics2D.OverlapCircleAll(trPivotPos, 2f, LayerMask.GetMask("Team"));
+                        
+                        if (attackRange.Length <= 0)
+                        {
+                            StateChange(MonsterState.MOVE);
+                        }
+                        else if (curAttackDelay <= 0)
+                        {
+                            StateChange(MonsterState.ATTACK);
+                        }
+                        else
+                        {
+                            StateChange(MonsterState.IDLE);
+                        }
+                    }
+                    else
+                    {
+                        StateChange(MonsterState.IDLE);
+                    }
+                }
+                //적일때
+                else if (gameObject.CompareTag("Enemy"))
+                {
+                    float range = 4.5f;
                     Collider2D[] sight = Physics2D.OverlapCircleAll(trPivotPos, range, LayerMask.GetMask("Team"));
                     
                     if (sight.Length > 0)
@@ -131,7 +180,7 @@ public class Monster : MonoBehaviour
                     }
                 }
                 //아군일때
-                else if (monsterStat.entityType == EntityType.TEAM)
+                else if (gameObject.CompareTag("Team"))
                 {
                     Vector3 playerPos = GameManager.Instance.player.GetComponent<Pivot>().tr.position;
                     Collider2D[] sight = Physics2D.OverlapCircleAll(trPivotPos, 5f, LayerMask.GetMask("Enemy"));
@@ -186,7 +235,7 @@ public class Monster : MonoBehaviour
             {
                 dir = (target.GetComponent<Pivot>().tr.position - trPivotPos).normalized;
             }
-            else if (monsterStat.entityType == EntityType.TEAM)
+            else if (gameObject.CompareTag("Team"))
             {
                 dir = (GameManager.Instance.player.GetComponent<Pivot>().tr.position - trPivotPos).normalized;
             }
@@ -236,7 +285,7 @@ public class Monster : MonoBehaviour
 
     void MovementScale(Vector2 dir)
     {
-        if (monsterStat.entityType == EntityType.BOSS)
+        if (gameObject.CompareTag("Boss"))
         {
             if (dir.x < 0) transform.localScale = new Vector3(2, 2, 1);
             else if (dir.x > 0) transform.localScale = new Vector3(-2, 2, 1);
@@ -270,22 +319,22 @@ public class Monster : MonoBehaviour
             if (targetMon.curState == MonsterState.DIE)
             {
                 //적이 아군을 죽였을때
-                if (monsterStat.entityType == EntityType.ENEMY)
+                if (gameObject.CompareTag("Enemy"))
                 {
-                    DataManager.Instance.gameData.teamMonsterType[targetMon.teamNum] = MonsterTypeEnum.NONE;
+                    DataManager.Instance.gameData.teamStats[targetMon.teamNum].monsterType = MonsterTypeEnum.NONE;
                 }
                 //아군이 적을 죽였을때
-                else if (monsterStat.entityType == EntityType.TEAM)
+                else if (gameObject.CompareTag("Team"))
                 {
                     //exp
                     bool teamLvUp = monsterStat.SetExp(targetMon.drops.dropExp * monsterStat.Exp_Plus);
                     if (teamLvUp) UIManager.Instance.LvUp_newObj(teamNum, true);
 
                     //money
-                    DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.Money, (int)(targetMon.drops.dropMoney * monsterStat.Money_Plus));
+                    DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.Money, (int)(targetMon.drops.dropMoney * monsterStat.Money_Plus));
 
                     //item
-                    if (targetMon.monsterStat.entityType != EntityType.BOSS)
+                    if (!targetMon.gameObject.CompareTag("Boss"))
                     {
                         if (monsterStat.Item_Plus + Random.Range(0, 100) >= 100)
                         {
@@ -311,10 +360,10 @@ public class Monster : MonoBehaviour
                     }
 
                     //보스 처리
-                    if (monsterStat.entityType == EntityType.BOSS)
+                    if (gameObject.CompareTag("Boss"))
                     {
                         GameManager.Instance.PlayAudio(GameManager.Instance.boss_Die_Clip);
-                        GameManager.Instance.cur_Floor.isBossClear = true;
+                        DataManager.Instance.gameData.isBossClear[DataManager.Instance.gameData.curFloor_Num] = true;
                         UIManager.Instance.Boss_UI_Update();
                         GameManager.Instance.Invoke("DoorActive", 3f);
                     }
@@ -324,9 +373,9 @@ public class Monster : MonoBehaviour
                     }
                     UIManager.Instance.Goods_UI_Update();
                     GameManager.Instance.Invoke("EnemySpawn", 4f);
-                    targetMon.Invoke("DropItem", 3f);
+                    targetMon.Invoke("DropPossession", 3f);
                 }
-                UIManager.Instance.DestroyMonsterUI(targetMon.teamNum, targetMon.monsterStat.entityType == EntityType.TEAM);
+                UIManager.Instance.DestroyMonsterUI(targetMon.teamNum, targetMon.gameObject.CompareTag("Team"));
                 Destroy(targetMon.gameObject, 3f);
                 targetMon = null;
             }
@@ -335,7 +384,7 @@ public class Monster : MonoBehaviour
             {
                 GameManager.Instance.PlayAudio(GameManager.Instance.damaged_Clip);
 
-                if (targetMon.monsterStat.entityType == EntityType.TEAM && targetMon.monsterStat.autoPotion && targetMon.monsterStat.hp * 2 < targetMon.monsterStat.Maxhp && DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.Potion) > 0)
+                if (targetMon.gameObject.CompareTag("Team") && targetMon.monsterStat.autoPotion && targetMon.monsterStat.hp * 2 < targetMon.monsterStat.Maxhp && DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.Potion) > 0)
                     targetMon.monsterStat.UsePotion();
                 if (targetMon.curState != MonsterState.ATTACK)
                     targetMon.StateChange(MonsterState.DAMAGED);
@@ -362,17 +411,17 @@ public class Monster : MonoBehaviour
             GetComponent<Collider2D>().enabled = false;
             
             // 아군이 아닐 때만 플레이어가 경험치를 얻음
-            if (monsterStat.entityType != EntityType.TEAM)
+            if (!gameObject.CompareTag("Team"))
             {
                 bool playerLvUp = DataManager.Instance.gameData.playerStat.SetExp(drops.dropExp * DataManager.Instance.gameData.playerStat.Exp_Plus);
                 if (playerLvUp) UIManager.Instance.LvUp_newObj(-1, true);
             }
 
             //돈 획득
-            DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.Money, (int)(drops.dropMoney * DataManager.Instance.gameData.playerStat.Money_Plus));
+            DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.Money, (int)(drops.dropMoney * DataManager.Instance.gameData.playerStat.Money_Plus));
 
             //아이템 드롭
-            if (monsterStat.entityType != EntityType.BOSS)
+            if (!gameObject.CompareTag("Boss"))
             {
                 for (int i = rands.dropItems.Length - 1; i >= 0; i--)
                 {
@@ -386,13 +435,13 @@ public class Monster : MonoBehaviour
                         drops.dropItem = null;
                 }
             }
-            Invoke("DropItem", 3f);
+            Invoke("DropPossession", 3f);
 
             //보스 처리
-            if (monsterStat.entityType == EntityType.BOSS)
+            if (gameObject.CompareTag("Boss"))
             {
                 GameManager.Instance.PlayAudio(GameManager.Instance.boss_Die_Clip);
-                GameManager.Instance.cur_Floor.isBossClear = true;
+                DataManager.Instance.gameData.isBossClear[DataManager.Instance.gameData.curFloor_Num] = true;
                 UIManager.Instance.Boss_UI_Update();
                 GameManager.Instance.Invoke("DoorActive", 3f);
             }
@@ -403,16 +452,26 @@ public class Monster : MonoBehaviour
 
             UIManager.Instance.Goods_UI_Update();
             GameManager.Instance.Invoke("EnemySpawn", 4f);
-            UIManager.Instance.DestroyMonsterUI(teamNum, monsterStat.entityType == EntityType.TEAM);
+            UIManager.Instance.DestroyMonsterUI(teamNum, gameObject.CompareTag("Team"));
+            
+            // 몬스터 배열에서 해당 몬스터 제거
+            if (gameObject.CompareTag("Enemy"))
+            {
+                DataManager.Instance.enemyMonsters[teamNum] = null;
+            }
+            else if (gameObject.CompareTag("Team"))
+            {
+                DataManager.Instance.teamMonsters[teamNum] = null;
+            }
+            
             Destroy(gameObject, 3f);
         }
         else
         {
             GameManager.Instance.PlayAudio(GameManager.Instance.damaged_Clip);
-            if (monsterStat.entityType == EntityType.TEAM && monsterStat.autoPotion && monsterStat.hp * 2 < monsterStat.Maxhp && DataManager.Instance.gameData.items.GetItemCount(ItemTypeEnum.Potion) > 0)
+            if (gameObject.CompareTag("Team") && monsterStat.autoPotion && monsterStat.hp * 2 < monsterStat.Maxhp && DataManager.Instance.gameData.possession.GetPossessionCount(PossessionTypeEnum.Potion) > 0)
                 monsterStat.UsePotion();
-            if (curState != MonsterState.ATTACK)
-                StateChange(MonsterState.DAMAGED);
+            StateChange(MonsterState.DAMAGED);
         }
         UIManager.Instance.Monster_UI_Update();
         UIManager.Instance.Player_UI_Update();
@@ -464,7 +523,7 @@ public class Monster : MonoBehaviour
             if (GameManager.Instance.Get_Entity_Count(true) < 6)
             {
                 UIManager.Instance.Message("몬스터를 포획했습니다!");
-                monsterStat.entityType = EntityType.TEAM;  // 팀으로 전환
+                gameObject.tag = "Team";  // 팀으로 전환
                 GameManager.Instance.TeamChange(this, true);
             }
             else
@@ -483,7 +542,7 @@ public class Monster : MonoBehaviour
         anim.SetInteger("State", (int)MonsterState.MOVE);
     }
 
-    public void DropItem()
+    public void DropPossession()
     {
         if (drops.dropItem == null) return;
         GameObject a = Instantiate(drops.dropItem, transform.position, Quaternion.identity);
@@ -499,8 +558,6 @@ public class Monster : MonoBehaviour
     public void StateChange(MonsterState nextState)
     {
         if (curState == MonsterState.DIE) return;
-
-        //이전 상태가 포획 상태면 변경 불가
         if (curState == MonsterState.CAUGHT_NET && nextState != MonsterState.DIE) return;
         curState = nextState;
         anim.SetInteger("State", (int)nextState);

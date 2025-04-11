@@ -99,15 +99,15 @@ public class StorePanel : MonoBehaviour
             switch (num)
             {
                 case 0:
-                    DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.Potion, 5);
+                    DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.Potion, 5);
                     UIManager.Instance.Message("포션 5개 획득!");
                     break;
                 case 1:
-                    DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.SilverKey, 2);
+                    DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.SilverKey, 2);
                     UIManager.Instance.Message("은 열쇠 2개 획득!");
                     break;
                 case 2:
-                    DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.GoldKey, 1);
+                    DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.GoldKey, 1);
                     UIManager.Instance.Message("금 열쇠 1개 획득!");
                     break;
             }
@@ -132,15 +132,15 @@ public class StorePanel : MonoBehaviour
                 switch (num)
                 {
                     case 0:
-                        DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.Potion, 8);
+                        DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.Potion, 8);
                         UIManager.Instance.Message("포션 8개 획득!");
                         break;
                     case 1:
-                        DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.SilverKey, 4);
+                        DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.SilverKey, 4);
                         UIManager.Instance.Message("은 열쇠 4개 획득!");
                         break;
                     case 2:
-                        DataManager.Instance.gameData.items.AddItem(ItemTypeEnum.GoldKey, 2);
+                        DataManager.Instance.gameData.possession.AddPossession(PossessionTypeEnum.GoldKey, 2);
                         UIManager.Instance.Message("금 열쇠 2개 획득!");
                         break;
                 }
@@ -152,7 +152,7 @@ public class StorePanel : MonoBehaviour
             else
             {
                 // TODO: 광고 시스템 구현
-                // GameManager.Instance.ad.ShowRewardAd(GetItemType(num), GetRewardAmount(num), GetRewardType(num));
+                // GameManager.Instance.ad.ShowRewardAd(GetPossessionType(num), GetRewardAmount(num), GetRewardPossessionType(num));
             }
         }
     }
@@ -165,14 +165,14 @@ public class StorePanel : MonoBehaviour
         DataManager.Instance.SaveGameData();
     }
 
-    private ItemTypeEnum GetItemType(int num)
+    private PossessionTypeEnum GetPossessionType(int num)
     {
         return num switch
         {
-            0 => ItemTypeEnum.Potion,
-            1 => ItemTypeEnum.SilverKey,
-            2 => ItemTypeEnum.GoldKey,
-            _ => ItemTypeEnum.Potion
+            0 => PossessionTypeEnum.Potion,
+            1 => PossessionTypeEnum.SilverKey,
+            2 => PossessionTypeEnum.GoldKey,
+            _ => PossessionTypeEnum.Potion
         };
     }
 
@@ -187,14 +187,14 @@ public class StorePanel : MonoBehaviour
         };
     }
 
-    private ItemTypeEnum GetRewardType(int num)
+    private PossessionTypeEnum GetRewardPossessionType(int num)
     {
         return num switch
         {
-            0 => ItemTypeEnum.Potion,
-            1 => ItemTypeEnum.SilverKey,
-            2 => ItemTypeEnum.GoldKey,
-            _ => ItemTypeEnum.Potion
+            0 => PossessionTypeEnum.Potion,
+            1 => PossessionTypeEnum.SilverKey,
+            2 => PossessionTypeEnum.GoldKey,
+            _ => PossessionTypeEnum.Potion
         };
     }
 
@@ -231,16 +231,16 @@ public class StorePanel : MonoBehaviour
     //         DataManager.Instance.gameData.goldKey += 20;
     //     }
     //     UIManager.Instance.Goods_UI_Update();
-    //     UIManager.Instance.Message("���ſ� �����߽��ϴ�");
+    //     UIManager.Instance.Message("구매 완료");
     //     DataManager.Instance.Json_Game_Data_Save();
-    //     Debug.Log("���ſϷ�");
+    //     Debug.Log("구매 완료");
     // }
 
-    // /* ���ſ� �������� �� ����Ǵ� �Լ� */
+    // /* 구매 실패 처리 함수 */
     // public void OnPurchaseFailed(UnityEngine.Purchasing.Product product, PurchaseFailureReason reason)
     // {
-    //     UIManager.Instance.Message("���ſ� �����߽��ϴ�.\n" + reason);
-    //     Debug.Log("���ſ� �����߽��ϴ�.\n" + reason);
+    //     UIManager.Instance.Message("구매 실패.\n" + reason);
+    //     Debug.Log("구매 실패.\n" + reason);
     // }
 
     //public void IAP(int num)
